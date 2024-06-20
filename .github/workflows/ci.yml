@@ -50,5 +50,5 @@ jobs:
 
     - name: Publish the Docker image to JFrog Artifactory
       run: |
-        docker tag spring-petclinic:latest https://hiroyukimorimoto.jfrog.io/artifactory/test-docker:latest
-        docker push ttps://hiroyukimorimoto.jfrog.io/artifactory/test-docker:latest
+        docker tag spring-petclinic:latest hiroyukimorimoto.jfrog.io/test-docker/spring-petclinic:latest
+        docker push push hiroyukimorimoto.jfrog.io/test-docker/spring-petclinic:latest
