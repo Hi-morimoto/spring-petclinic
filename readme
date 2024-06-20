@@ -1,0 +1,23 @@
+#Account setting on the JFrog.
+1.Account creation.
+2.API token creation.
+3.Repository creation.
+
+# Github setting
+## Setting up project
+### 1. Clone repository
+    git clone https://github.com/spring-projects/spring-petclinic.git
+### 2. Github Action setting
+    Making the file "ci.yml" under the github/workflows.
+### 3. Editing "ci.yml"
+    The code is as below.
+    https://github.com/Hi-morimoto/spring-petclinic/blob/main/.github/workflows/ci.yml
+### 4. Adding docker file
+    The code is as below.
+    https://github.com/Hi-morimoto/spring-petclinic/blob/main/Dockerfile
+### 5. Run the Github Action
+
+# Checking the scan on the JFrog portal
+## On the Artifactory>Package, we can see the package "spring-petclinic" and pull the docker image.
+## On the menu "XrayData", we can see the vulnerabilities and export the result.
+
