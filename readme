@@ -1,23 +1,109 @@
-#Account setting on the JFrog.
+This repository contains the source code for the Spring Pet Clinic application and a GitHub Actions CI/CD pipeline to build, test, package the application as a Docker image, and deploy it to JFrog Artifactory.
+
+## Project Setup
+
+### 1. Clone the Repository
+git clone https://github.com/<your-username>/spring-petclinic.git
+
+### 2. Install Required Tools
+Docker
+JDK 17
+Maven
+### Account setting on the JFrog.
 1.Account creation.
 2.API token creation.
 3.Repository creation.
+Checking the scan on the JFrog portal
+On the Artifactory>Package, we can see the package "spring-petclinic" and pull the docker image.
+On the menu "XrayData", we can see the vulnerabilities and export the result.
 
-# Github setting
-## Setting up project
-### 1. Clone repository
-    git clone https://github.com/spring-projects/spring-petclinic.git
-### 2. Github Action setting
-    Making the file "ci.yml" under the github/workflows.
-### 3. Editing "ci.yml"
-    The code is as below.
-    https://github.com/Hi-morimoto/spring-petclinic/blob/main/.github/workflows/ci.yml
-### 4. Adding docker file
-    The code is as below.
-    https://github.com/Hi-morimoto/spring-petclinic/blob/main/Dockerfile
-### 5. Run the Github Action
+### 3. Running the Docker Image
+1. Log in to JFrog Artifactory
+docker login <YOUR_JFROG_URL> -u <YOUR_JFROG_USERNAME> -p <YOUR_JFROG_API_KEY>
 
-# Checking the scan on the JFrog portal
-## On the Artifactory>Package, we can see the package "spring-petclinic" and pull the docker image.
-## On the menu "XrayData", we can see the vulnerabilities and export the result.
+2. Pull the Docker Image
+docker pull hiroyukimorimoto.jfrog.io/test-docker/spring-petclinic:latest
+
+3. Run the Docker Image
+docker run -d -p 8080:8080 <YOUR_JFROG_URL>/<YOUR_JFROG_repository>/spring-petclinic:latest
+
+4. Access the Application
+Open your web browser and navigate to http://localhost:8080.
+
+Saving and Submitting the Docker Image
+To save the Docker image as a file and prepare it for submission, use the following commands.
+
+
+1. Save the Docker Image
+docker save -o spring-petclinic.tar <YOUR_JFROG_URL>/<YOUR_JFROG_repository>/spring-petclinic:latest
+
+2. Create a Submission ZIP File
+Gather all the necessary files and create a ZIP file for submission.
+zip -r spring-petclinic-package.zip spring-petclinic.tar README.md Dockerfile .github
+
+
+## CI/CD Pipeline
+This repository is configured with a GitHub Actions CI/CD pipeline. The pipeline consists of the following steps:
+
+1. Checkout Code
+yaml file file
+- name: Checkout code
+ uses: actions/checkout@v4
+
+
+2. Set up JDK 17
+yaml file file
+- name: Set up JDK 17
+ uses: actions/setup-java@v3
+ with:
+   distribution: 'temurin'
+   java-version: '17'
+
+
+3. Cache Maven Packages
+yaml file file
+- name: Cache Maven packages
+ uses: actions/cache@v3
+ with:
+   path: ~/.m2/repository
+   key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+   restore-keys: ${{ runner.os }}-maven
+
+
+4. Compile and Package the Code
+yaml file file
+- name: Compile and package the code
+ run: ./mvnw package -DskipTests
+
+
+5. Run Tests
+yaml file file
+- name: Run tests
+ run: ./mvnw test
+
+
+6. Build the Docker Image
+yaml file file
+- name: Package the project as a Docker image
+ run: |
+   docker build -t spring-petclinic:latest .
+
+
+7. Log in to JFrog Artifactory
+yaml file file
+- name: Log in to JFrog Artifactory
+ env:
+   JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
+   JFROG_API_KEY: ${{ secrets.JFROG_API_KEY }}
+ run: |
+   echo "Logging in to JFrog Artifactory"
+   echo $JFROG_API_KEY | docker login hiroyukimorimoto.jfrog.io -u $JFROG_USERNAME --password-stdin
+8. Push the Docker Image to JFrog Artifactory
+yaml file file
+
+
+- name: Publish the Docker image to JFrog Artifactory
+ run: |
+   docker tag spring-petclinic:latest <YOUR_JFROG_URL>/<YOUR_JFROG_repository>/spring-petclinic:latest
+   docker push <YOUR_JFROG_URL>/<YOUR_JFROG_repository>/spring-petclinic:latest
 
