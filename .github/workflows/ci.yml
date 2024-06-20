@@ -46,9 +46,9 @@ jobs:
         JFROG_API_KEY: ${{ secrets.JFROG_API_KEY }}
       run: |
         echo "Logging in to JFrog Artifactory"
-        echo $JFROG_API_KEY | docker login ${{ secrets.JFROG_URL }} -u $JFROG_USERNAME --password-stdin
+        echo $JFROG_API_KEY | docker login https://hiroyukimorimoto.jfrog.io -u $JFROG_USERNAME --password-stdin
 
     - name: Publish the Docker image to JFrog Artifactory
       run: |
-        docker tag spring-petclinic:latest ${{ secrets.JFROG_URL }}/docker-repo/spring-petclinic:latest
-        docker push ${{ secrets.JFROG_URL }}/docker-repo/spring-petclinic:latest
+        docker tag spring-petclinic:latest https://hiroyukimorimoto.jfrog.io/docker-repo/spring-petclinic:latest
+        docker push https://hiroyukimorimoto.jfrog.io/docker-repo/spring-petclinic:latest
