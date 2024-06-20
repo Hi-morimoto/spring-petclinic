@@ -24,11 +24,11 @@ docker login <YOUR_JFROG_URL> -u <YOUR_JFROG_USERNAME> -p <YOUR_JFROG_API_KEY>
 
 
 2. Pull the Docker Image
-docker pull hiroyukimorimoto.jfrog.io/test-docker/spring-petclinic:latest
+docker pull a1846hm/spring-petclinic:latest
 
 
 3. Run the Docker Image
-docker run -d -p 8080:8080 <YOUR_JFROG_URL>/<YOUR_JFROG_repository>/spring-petclinic:latest
+docker run -d -p 8080:8080 a1846hm/spring-petclinic:latest
 
 
 4. Access the Application
