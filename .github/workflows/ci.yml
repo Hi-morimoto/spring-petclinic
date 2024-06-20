@@ -30,8 +30,8 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-maven
 
-    - name: Compile the code
-      run: ./mvnw compile
+    - name: Compile and package the code
+      run: ./mvnw package -DskipTests
 
     - name: Run tests
       run: ./mvnw test
